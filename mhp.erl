@@ -31,8 +31,7 @@ game() ->
 
     %% Assumption B: The car and goat's are randomly shuffled behind the doors    
     {Door1, Rest}  = PickOneOf(Possibilities),
-    {Door2, Rest2} = PickOneOf(Rest),
-    [Door3] = Rest2,
+    {Door2, [Door3]} = PickOneOf(Rest),
     Doors = [Door1, Door2, Door3],
     
     %% Assumption C: The player picks a random door
