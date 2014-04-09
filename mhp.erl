@@ -6,14 +6,14 @@ t() ->
     Games = [game() || _ <-lists:seq(1,NumGames)],
     
     FirstChoiceWinsPercentage =
-        length(lists:filter(fun({car,_}) -> true; (_) -> false end,
-                            Games)) / NumGames,
+        (length(lists:filter(fun({car,_}) -> true; (_) -> false end,
+                            Games)) / NumGames) * 100,
     
     SwitchWinsPercentage =
-        length(lists:filter(fun({_,car}) -> true; (_) -> false end,
-                            Games)) / NumGames,
+        (length(lists:filter(fun({_,car}) -> true; (_) -> false end,
+                            Games)) / NumGames) * 100,
 
-    io:format("First choice wins ~p%, switch door wins: ~p% ~n",
+    io:format("First choice wins ~.3f%, switch door wins: ~.3f% ~n",
               [FirstChoiceWinsPercentage, SwitchWinsPercentage]),
     ok.
 
@@ -22,7 +22,7 @@ game() ->
     {A,B,C} = now(),
     random:seed(A,B,C),
 
-    %% Assumption A: one car, two goats.
+    %% Assumption A: one car, two goats
     Possibilities = [car, goat, goat],
 
     PickOneOf = fun(List) -> Element = lists:nth(random:uniform(length(List)), List),
@@ -48,4 +48,6 @@ game() ->
     [PlayerSwitchedChoice] =
         lists:delete(PlayerFirstChoice, lists:delete(GameHostChoice, Doors)),
 
+    %% Scenario B: Player sticks with her choice; for this we simply return
+    %% the first choice variable
     {PlayerFirstChoice, PlayerSwitchedChoice}.
